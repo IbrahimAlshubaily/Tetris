@@ -1,2 +1,7 @@
-package PACKAGE_NAME;public class TetrisPieceTest {
+
+public class TetrisPieceTest {
+
+
+
 }
+
