@@ -33,7 +33,7 @@ public enum TetrisPieceShape {
     }
 
     public static TetrisPieceShape sample() {
-        int sampleIdx = (int) Math.round(Math.random() * values().length);
+        int sampleIdx = (int) Math.floor(Math.random() * values().length);
         return values()[sampleIdx];
     }
 }
