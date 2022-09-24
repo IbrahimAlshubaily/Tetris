@@ -1,8 +1,8 @@
 package org.example.model;
 
 public class TetrisPieceBlock {
-    int rowOffset;
-    int colOffset;
+    public final int rowOffset;
+    public final int colOffset;
 
     TetrisPieceBlock(int rowOffset, int colOffset) {
         this.rowOffset = rowOffset;
