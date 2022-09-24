@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import org.example.model.TetrisPiece;
+import org.example.model.TetrisPieceBlock;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -27,12 +28,48 @@ public class Engine {
         TimerTask gameLoop = new TimerTask() {
             public void run() {
                 if (!gameOver) {
-                    down();
+                    step();
                 }
             }
         };
         Timer timer = new Timer("GameLoopTimer" );
         timer.scheduleAtFixedRate(gameLoop, 0L, stepInterval);
+    }
+
+    private void step() {
+        clearCompleteRows();
+        down();
+    }
+
+    private void clearCompleteRows() {
+        for (int row = nRows; row > 0; row--) {
+            if(isCompleteRow(row)) {
+                for (TetrisPiece piece: frozenTetrisPieces) {
+                    if (piece.getMinRow() < row) {
+                        piece.down();
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean isCompleteRow(int row) {
+        boolean[] cellIsOccupied = new boolean[nCols];
+        int blockRow, blockCol;
+        for (TetrisPiece piece: frozenTetrisPieces) {
+            for (TetrisPieceBlock block: piece.getBlocks()) {
+                blockRow = piece.getRow() + block.getRowOffset();
+                if (blockRow == row) {
+                    blockCol = piece.getCol() + block.getColOffset();
+                    cellIsOccupied[blockCol] = true;
+                }
+            }
+        }
+        for (boolean isOccupied : cellIsOccupied) {
+            if (!isOccupied)
+                return false;
+        }
+        return true;
     }
 
     public void down() {
@@ -86,5 +123,9 @@ public class Engine {
 
     public boolean isGameOver() {
         return  gameOver;
+    }
+
+    public void rotate() {
+        currTetrisPiece.rotateLeft();
     }
 }
