@@ -5,8 +5,8 @@ import java.util.Arrays;
 
 public class TetrisPiece {
 
-    private TetrisPiecePosition position;
-    private TetrisPieceBlock[] blocks;
+    private final TetrisPiecePosition position;
+    private final TetrisPieceBlock[] blocks;
 
     public TetrisPiece() {
         position = new TetrisPiecePosition();
@@ -14,18 +14,18 @@ public class TetrisPiece {
     }
 
     public int getMaxRow() {
-        return position.getRow() + Arrays.stream(blocks).mapToInt((block) -> block.getRowOffset()).max().getAsInt();
+        return position.getRow() + Arrays.stream(blocks).mapToInt(TetrisPieceBlock::getRowOffset).max().getAsInt();
     }
 
     public int getMinRow() {
-        return position.getRow() + Arrays.stream(blocks).mapToInt((block) -> block.getRowOffset()).min().getAsInt();
+        return position.getRow() + Arrays.stream(blocks).mapToInt(TetrisPieceBlock::getRowOffset).min().getAsInt();
     }
 
     public int getMaxCol() {
-        return position.getCol() + Arrays.stream(blocks).mapToInt((block) -> block.getColOffset()).max().getAsInt();
+        return position.getCol() + Arrays.stream(blocks).mapToInt(TetrisPieceBlock::getColOffset).max().getAsInt();
     }
     public int getMinCol() {
-        return position.getCol() + Arrays.stream(blocks).mapToInt((block) -> block.getColOffset()).min().getAsInt();
+        return position.getCol() + Arrays.stream(blocks).mapToInt(TetrisPieceBlock::getColOffset).min().getAsInt();
     }
 
 
@@ -40,12 +40,31 @@ public class TetrisPiece {
         position.right();
     }
 
-    public void rotateLeft() {
+    public void rotateLeft(int nRows, int nCols) {
+        boolean reverse = false;
         for (int i = 0; i < blocks.length; i++) {
             blocks[i] = blocks[i].rotateLeft();
+            reverse = blockIsOutOfBounds(blocks[i], nRows, nCols);
         }
+        if (reverse)
+            rotateRight(nRows, nCols);
     }
 
+    public void rotateRight(int nRows, int nCols) {
+        boolean reverse = false;
+        for (int i = 0; i < blocks.length; i++) {
+            blocks[i] = blocks[i].rotateRight();
+            reverse = blockIsOutOfBounds(blocks[i], nRows, nCols);
+        }
+        if (reverse)
+            rotateLeft(nRows, nCols);
+    }
+
+    private boolean blockIsOutOfBounds(TetrisPieceBlock block, int nRows, int nCols) {
+        int blockCol = position.getCol() + block.getColOffset();
+        int blockRow = position.getRow() + block.getRowOffset();
+        return blockCol < 0 || blockCol > nCols  ||  blockRow > nRows;
+    }
 
     public boolean isBlocked(TetrisPiece otherPiece, int moveRowOffset, int moveColOffset) {
 

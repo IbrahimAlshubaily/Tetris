@@ -100,6 +100,13 @@ public class Engine {
         }
     }
 
+    public void rotateLeft() {
+        currTetrisPiece.rotateLeft(nRows, nCols);
+    }
+    public void rotateRight() {
+        currTetrisPiece.rotateRight(nRows, nCols);
+    }
+
     private boolean isBlocked(int moveRowOffset, int moveColOffset) {
 
         for (TetrisPiece otherPiece : frozenTetrisPieces) {
@@ -123,9 +130,5 @@ public class Engine {
 
     public boolean isGameOver() {
         return  gameOver;
-    }
-
-    public void rotate() {
-        currTetrisPiece.rotateLeft();
     }
 }

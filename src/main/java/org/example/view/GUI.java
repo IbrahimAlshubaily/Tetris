@@ -77,10 +77,10 @@ public class GUI extends Canvas implements ActionListener {
                     engine.left();
                 } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                     engine.right();
-                } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-                    engine.down();
                 } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-                    engine.rotate();
+                    engine.rotateLeft();
+                } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                    engine.rotateRight();
                 }
             }
 
